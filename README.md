@@ -39,5 +39,6 @@ Je saisis un `username`et un `password` dans le formulaire, si le `username` n'e
 #### 2.4.1 Côté BACK : dockeriser API et DB
 #### 2.4.2 Côté FRONT : dockeriser le client
 
-  
+ 
+### Petit bonus : l'interface n'est pas très belle, tu as carte blanche !
 ![Steps](https://i.imgur.com/Oi1QDgI.png)
