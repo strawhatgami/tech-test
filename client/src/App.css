@@ -11,6 +11,7 @@
 .App-logo {
   height: 100px;
   max-width: 50%;
+  animation: App-logo-spin 32s linear infinite;
   pointer-events: none;
 }
 
@@ -31,6 +32,10 @@
 .login {
   color: white;
   font-size: xx-large;
+}
+
+a {
+  color: white;
 }
 
 @keyframes App-logo-spin {
