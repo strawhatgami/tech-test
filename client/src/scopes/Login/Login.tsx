@@ -9,8 +9,9 @@ export default function Login() {
   return (
     <div className="Login">
       <form
-        onSubmit={() => {
-          history.push("/trade?token=test");
+        onSubmit={(event) => {
+          event.preventDefault();
+          history.push("/players?token=test");
         }}
       >
         <label htmlFor="username">Username</label>
