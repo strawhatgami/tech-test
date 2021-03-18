@@ -16,6 +16,7 @@ Order {
   id: number
   price: number
   expirationDate: Date
+  userId: number,
 }
 ```
 
