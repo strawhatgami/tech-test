@@ -6,7 +6,7 @@ import Login from "./scopes/Login/Login";
 import "./App.css";
 import { AppProvider, useAppContext } from "./contexts/AppContext";
 import TokenHandler from "./scopes/TokenHandler/TokenHandler";
-import Beers from "./scopes/Beers/Beers";
+import Scores from "./scopes/Scores/Scores";
 
 // The famous nullable boolean we inherited from Java
 type nullableBoolean = boolean | null;
@@ -25,7 +25,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img
-          src="https://lh3.googleusercontent.com/proxy/gaAeBZiydOKQoCrfwFg_BgBUl14rRmeVatkaMchIdAkl7hvILA0MvjRCx2ANm1JAdzG4wfUxQX_4NlVELvug0Bl0HdC5cEr3MLs_KnNnXgV1DAwbATuP"
+          src="https://lh3.googleusercontent.com/proxy/i7lUa9oDR35o7u2RIqqLFv7ZUeLRbG0cGOnye0qjScI1EvL4LBH5ZnmKsvRHWaxmNBfXeaqAqb19wmHXfF6fRbKQkch1sHV8au4rv7RNDz7_NtvhK1rWiIiQz7ZwzlWGJKNC_R31"
           className="App-logo"
           alt="logo"
         />
@@ -35,7 +35,7 @@ function App() {
           <Route path="/login" component={Login}></Route>
           {token && (
             <>
-              <Route path="/beers" component={Beers}></Route>
+              <Route path="/scores" component={Scores}></Route>
             </>
           )}
           <Route path="*" exact>

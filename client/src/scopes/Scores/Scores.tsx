@@ -1,15 +1,15 @@
 import React from "react";
 
-import "./Beers.css";
+import "./Scores.css";
 
-export default function Beers() {
+export default function Scores() {
   return (
-    <div className="Beers">
+    <div className="Scores">
       <div className="table">
         <div className="control">
-          <label htmlFor="pints">
-            Pints
-            <input type="number" id="pints"></input>
+          <label htmlFor="score">
+            Score
+            <input type="number" id="score"></input>
           </label>
           <button>{`Ajouter un score`}</button>
         </div>
@@ -17,13 +17,13 @@ export default function Beers() {
           <thead>
             <tr>
               <th>username</th>
-              <th>pints</th>
-              <th>drink date</th>
+              <th>score</th>
+              <th>date</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Pierre</td>
+              <td>Karim</td>
               <td>2</td>
               <td>{new Date().toDateString()}</td>
             </tr>
