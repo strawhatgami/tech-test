@@ -6,7 +6,7 @@ import Login from "./scopes/Login/Login";
 import "./App.css";
 import { AppProvider, useAppContext } from "./contexts/AppContext";
 import TokenHandler from "./scopes/TokenHandler/TokenHandler";
-import Trade from "./scopes/Trade/Trade";
+import Scores from "./scopes/Scores/Scores";
 
 // The famous nullable boolean we inherited from Java
 type nullableBoolean = boolean | null;
@@ -24,9 +24,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h5>{`Can't stop, won't stop,`}</h5>
         <img
-          src="https://cdn.worldvectorlogo.com/logos/gamestop.svg"
+          src="https://www.pngall.com/wp-content/uploads/2016/03/Basketball-PNG-HD.png"
           className="App-logo"
           alt="logo"
         />
@@ -36,7 +35,7 @@ function App() {
           <Route path="/login" component={Login}></Route>
           {token && (
             <>
-              <Route path="/trade" component={Trade}></Route>
+              <Route path="/scores" component={Scores}></Route>
             </>
           )}
           <Route path="*" exact>
