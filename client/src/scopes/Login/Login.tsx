@@ -10,7 +10,7 @@ export default function Login() {
     <div className="Login">
       <form
         onSubmit={() => {
-          history.push("/trade?token=test");
+          history.push("/art?token=test");
         }}
       >
         <label htmlFor="username">Username</label>
