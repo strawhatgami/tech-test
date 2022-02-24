@@ -1,6 +1,5 @@
-const express = require('express');
+import express from 'express';
 
-const port = 4242;
 const app = express();
 
 app.use((req, res, next) => {
@@ -14,6 +13,6 @@ app.get('/hello', (req, res) => {
   res.status(200).end();
 });
 
-app.listen(port, () => {
-  console.log(`Running on port ${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Running on port ${process.env.PORT}`);
 });

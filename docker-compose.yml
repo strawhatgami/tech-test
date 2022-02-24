@@ -9,10 +9,11 @@ services:
     working_dir: '/usr/src/api'
     restart: always
     ports:
-      - 127.0.0.1:${API__PUBLIC_PORT}:4242
+      - 127.0.0.1:${API__PUBLIC_PORT}:${API__INTERNAL_PORT}
     volumes:
       - ./server:/usr/src/api
     environment:
+      - PORT=${API__INTERNAL_PORT}
       - DB__HOST=${DB__HOST}
       - DB__PORT=${DB__PORT}
       - DB__USER=${DB__USER}
