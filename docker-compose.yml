@@ -1,0 +1,52 @@
+version: '3.5'
+services:
+  server:
+    container_name: 'tech-test-server'
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file: server/.env
+    working_dir: '/usr/src/api'
+    restart: always
+    ports:
+      - 127.0.0.1:${API__PUBLIC_PORT}:4242
+    volumes:
+      - ./server:/usr/src/api
+    environment:
+      - DB__HOST=${DB__HOST}
+      - DB__PORT=${DB__PORT}
+      - DB__USER=${DB__USER}
+      - DB__PASSWORD=${DB__PASSWORD}
+      - DB__NAME=${DB__NAME}
+    networks:
+      - tech_test_network
+  db:
+    image: mongo:5.0.6
+    container_name: ${DB__HOST}
+    volumes:
+      - ./db/data:/data/db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${DB__ROOT_PASSWORD}
+    networks:
+      - tech_test_network
+  client:
+    container_name: 'tech-test-client'
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    env_file: client/.env
+    working_dir: '/usr/src/client'
+    restart: always
+    ports:
+      - 127.0.0.1:${CLIENT__PUBLIC_PORT}:3000
+    volumes:
+      - ./client:/usr/src/client
+    environment:
+      - API_HOST=127.0.0.1:${API__PUBLIC_PORT}
+    networks:
+      - tech_test_network
+
+networks:
+  tech_test_network:

@@ -2,6 +2,14 @@
 
 L'objectif est simple: Un CRUD fullstack permettant à plusieurs participants de logger leur watchtime sur un lecteur multimédia donné.
 
+## 0. Installation
+```
+cp .env.example .env
+cp client/.env.example client/.env
+cp server/.env.example server/.env
+docker-compose up
+```
+
 ## 1. Data
 
 ```
