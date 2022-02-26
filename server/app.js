@@ -2,9 +2,12 @@
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
+import bootstrap from './bootstrap.js';
 import user from './routes/user.js';
 
 var app = express();
+
+bootstrap();
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
