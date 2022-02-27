@@ -1,14 +1,18 @@
-/* eslint-disable no-use-before-define */
+import AutoIncrementFactory from 'mongoose-sequence';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import passportLocalMongoose from 'passport-local-mongoose';
+
+const AutoIncrement = AutoIncrementFactory(mongoose);
 
 export const name = 'User';
 
 const { Schema } = mongoose;
 const { JWT_SECRET, JWT_ISSUER, JWT_AUDIENCE } = process.env;
 
-const schema = new Schema({});
+const schema = new Schema({
+  _id: Number,
+}, { _id: false });
 
 const numericDateFromDate = (date) => parseInt(date.getTime() / 1000, 10);
 schema.methods.createToken = async function () {
@@ -57,6 +61,7 @@ schema.plugin(passportLocalMongoose, {
   usernameUnique: true,
   limitAttempts: true,
 });
+schema.plugin(AutoIncrement);
 
 const model = mongoose.model(name, schema);
 

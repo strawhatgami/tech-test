@@ -1,13 +1,14 @@
 import express from 'express';
+import { controllerWrapper } from './misc.js';
+import { userRouter as sessionRouter } from './session.js';
+import { getRequesterData } from './userControllers.js';
+
 const { Router } = express;
-import {asyncRoute} from './misc.js';
 
 const router = Router();
 
-export const controller = async (req, res) => {
-  res.status(200).end();
-};
+router.get('/me', controllerWrapper(getRequesterData));
 
-router.get('/', asyncRoute(controller));
+router.use('/:userId/session/', sessionRouter);
 
 export default router;

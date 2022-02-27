@@ -7,7 +7,7 @@ const {
 
 const model = {
   [userName]: userModel,
-  ObjectId: mongoose.Types.ObjectId,
+  isDbId: (id) => typeof id == 'number' && !isNaN(id),
 };
 
 export const connect = async () => {
