@@ -8,18 +8,9 @@ import { AppProvider, useAppContext } from "./contexts/AppContext";
 import TokenHandler from "./scopes/TokenHandler/TokenHandler";
 import Players from "./scopes/Players/Players";
 
-// The famous nullable boolean we inherited from Java
-type nullableBoolean = boolean | null;
-
 function App() {
-  const [connected, setConnected] = useState<nullableBoolean>(null);
-  const { token, setToken } = useAppContext();
-
-  useEffect(() => {
-    fetch("http://localhost:4242/hello")
-      .then(() => setConnected(true))
-      .catch(() => setConnected(false));
-  }, []);
+  const { token } = useAppContext();
+  const title = "API: " + (token ? " connected" : " not connected");
 
   return (
     <div className="App">
@@ -31,23 +22,21 @@ function App() {
           alt="logo"
         />
       </header>
+      <h1>{title}</h1>
       <Router>
         <Switch>
           <Route path="/login" component={Login}></Route>
-          {token && (
-            <>
-              <Route path="/players" component={Players}></Route>
-            </>
+          {!!token && (
+            <Route path="/players" component={Players}></Route>
           )}
           <Route path="/" exact>
-            <h1>
-              API:
-              {connected === true && " connected"}
-              {connected === false && " not connected"}
-            </h1>
-            <Link className="login" to="/login">
-              Login
-            </Link>
+            <>
+              {!!token || (
+                <Link className="login" to="/login">
+                  Login
+                </Link>
+              )}
+            </>
           </Route>
         </Switch>
         <Route path="*" component={TokenHandler}></Route>

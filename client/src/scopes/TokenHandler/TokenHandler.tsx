@@ -14,9 +14,8 @@ export default function TokenHandler() {
 
     const matchedToken = /(?:\?|&)token=([^=&]*)(?:&?)/gi.exec(location.search);
 
-    if (matchedToken && matchedToken[1]) {
-      setToken(matchedToken[1]);
-    }
+    const urlToken = matchedToken?.[1];
+    if (urlToken) setToken(urlToken);
   }, [location, token]);
 
   return null;

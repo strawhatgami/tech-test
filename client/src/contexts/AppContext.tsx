@@ -25,9 +25,9 @@ const AppContext = createContext<IAppState & IAppContext>({
 });
 
 export const AppReducer = (state: IAppState, action: Actions<ActionTypes>) => {
-  switch (action.type) {
+  switch (action?.type) {
     case ActionTypes.SET_TOKEN:
-      return { ...state, token: action?.payload };
+      return { ...state, token: action.payload };
     default:
       return state;
   }
