@@ -1,12 +1,11 @@
 import React, {useState} from "react";
 import { useHistory } from "react-router";
-import {login as apiLogin } from "../../network/index";
 import { useAppContext } from "../../contexts/AppContext";
 
 import "./Login.css";
 
 export default function Login() {
-  const { setToken } = useAppContext();
+  const { apiLogin } = useAppContext();
   const history = useHistory();
   const [state, setState] = useState({
     login: "",
@@ -43,7 +42,6 @@ export default function Login() {
       password: "",
     });
 
-    setToken(token);
     history.push("/players?token=" + token);
   };
 

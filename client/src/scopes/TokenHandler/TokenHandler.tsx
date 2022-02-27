@@ -12,9 +12,8 @@ export default function TokenHandler() {
       return null;
     }
 
-    const matchedToken = /(?:\?|&)token=([^=&]*)(?:&?)/gi.exec(location.search);
-
-    const urlToken = matchedToken?.[1];
+    const query = new URLSearchParams(location.search);
+    const urlToken = query.get("token");
     if (urlToken) setToken(urlToken);
   }, [location, token]);
 

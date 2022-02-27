@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
+import {login as apiLogin } from "../network/index";
 import { ActionTypes } from "./actions";
 
 type Actions<T> = {
@@ -12,16 +13,29 @@ interface IAppState {
 }
 
 interface IAppContext {
-  setToken: (string) => void;
+  setToken: (token: string) => void;
+  apiLogin: (login: string, password: string) => Promise<any>;
 }
 
 const initialState: IAppState = {
   token: null,
 };
 
+const actionsCreators = (state: {}, dispatch: Function) =>  ({
+  setToken: (token: string) =>
+    dispatch({ type: ActionTypes.SET_TOKEN, payload: token }),
+  apiLogin: async (login: string, password: string) => {
+    const {token} = await apiLogin(login, password);
+
+    dispatch({ type: ActionTypes.SET_TOKEN, payload: token })
+
+    return token;
+  },
+});
+
 const AppContext = createContext<IAppState & IAppContext>({
   ...initialState,
-  setToken: () => {},
+  ...actionsCreators(initialState, () => {}),
 });
 
 export const AppReducer = (state: IAppState, action: Actions<ActionTypes>) => {
@@ -40,10 +54,7 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
     <AppContext.Provider
       value={{
         ...state,
-        setToken: (token) =>
-          setImmediate(() =>
-            dispatch({ type: ActionTypes.SET_TOKEN, payload: token })
-          ),
+        ...actionsCreators(state, dispatch),
       }}
     >
       {children}
