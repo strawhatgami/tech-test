@@ -5,14 +5,14 @@ import { useAppContext } from "../../contexts/AppContext";
 import "./Login.css";
 
 export default function Login() {
-  const { apiLogin } = useAppContext();
+  const { login } = useAppContext();
   const history = useHistory();
   const [state, setState] = useState({
-    login: "",
+    username: "",
     password: "",
   });
 
-  const {login, password} = state;
+  const {username, password} = state;
   const set = (fieldName: string) => (e: { target: { value: string; }; }) => {
     setState({
       ...state,
@@ -23,11 +23,11 @@ export default function Login() {
   const onSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
-    if (!login || !password) return;
+    if (!username || !password) return;
 
     let token = null;
     try {
-      ({token} = await apiLogin(login, password));
+      ({token} = await login(username, password));
     } catch (e) {
       if (e.status == 401) return;
 
@@ -38,7 +38,7 @@ export default function Login() {
     if(!token) return;
 
     setState({
-      login: "",
+      username: "",
       password: "",
     });
 
@@ -52,8 +52,8 @@ export default function Login() {
         <input
           id="username"
           type="text"
-          value={login}
-          onChange={set("login")} />
+          value={username}
+          onChange={set("username")} />
         <label htmlFor="username">Password</label>
         <input
           id="password"

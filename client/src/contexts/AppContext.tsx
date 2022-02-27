@@ -14,7 +14,7 @@ interface IAppState {
 
 interface IAppContext {
   setToken: (token: string) => void;
-  apiLogin: (login: string, password: string) => Promise<any>;
+  login: (username: string, password: string) => Promise<any>;
 }
 
 const initialState: IAppState = {
@@ -24,8 +24,8 @@ const initialState: IAppState = {
 const actionsCreators = (state: {}, dispatch: Function) =>  ({
   setToken: (token: string) =>
     dispatch({ type: ActionTypes.SET_TOKEN, payload: token }),
-  apiLogin: async (login: string, password: string) => {
-    const {token} = await apiLogin(login, password);
+  login: async (username: string, password: string) => {
+    const {token} = await apiLogin(username, password);
 
     dispatch({ type: ActionTypes.SET_TOKEN, payload: token })
 
