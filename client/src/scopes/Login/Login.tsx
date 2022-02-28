@@ -25,7 +25,7 @@ export default function Login() {
 
     if (!username || !password) return;
 
-    const {token} = await login(username, password);
+    const token = await login(username, password);
 
     if(!token) return;
 

@@ -21,5 +21,6 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'react/prop-types': 'warn', // Should not stop compilation, since we use typescript instead
   },
 };

@@ -34,6 +34,32 @@ table {
   color: inherit;
 }
 
+th.edit {
+  width: 3em;
+}
+
+th.time {
+  width: 60px;
+}
+
+.time-input {
+  width: 50px;
+}
+
+.player-input {
+  width: 250px;
+}
+
+.edit-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.edit-buttons > * {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
 tr > td {
   border-top: 0.5px #777 solid;
 }

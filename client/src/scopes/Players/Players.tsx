@@ -1,15 +1,15 @@
 import React, {useState} from "react";
-import { useAppContext } from "../../contexts/AppContext";
+import { useAppContext, Session } from "../../contexts/AppContext";
 
 import "./Players.css";
 
-function CreateSessionForm() {
-  const players = [{
-    label: 'Windows Media Player', value: 'windows-media-player',
-  }, {
-    label: 'VLC', value: 'vlc',
-  }];
+const players = [{
+  label: 'Windows Media Player', value: 'windows-media-player',
+}, {
+  label: 'VLC', value: 'vlc',
+}];
 
+function CreateSessionForm() {
   const { addSession } = useAppContext();
   const [state, setState] = useState({
     time: 0,
@@ -65,6 +65,97 @@ function CreateSessionForm() {
   );
 }
 
+function EditSessionRowDataFields({session, stopEditRow} : {session: Session, stopEditRow: Function}) {
+  const { updateSession } = useAppContext();
+  const {id, username, player: initialPlayer, time: initialTime} = session;
+  const playerObj = players.find(({value}) => value == initialPlayer);
+  const [state, setState] = useState({
+    time: initialTime,
+    player: playerObj?.value || initialPlayer,
+  });
+  const {time, player} = state;
+  const set = (fieldName: string) => (e: { target: { value: string; }; }) => {
+    setState({
+      ...state,
+      [fieldName]: e.target.value,
+    });
+  };
+
+  const askUpdate = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+
+    if (!time || time < 0 || !player) return;
+
+    updateSession(id, time, player);
+    stopEditRow();
+  };
+
+  return (
+    <tr>
+      <td>{username}</td>
+      <td>
+        <select
+          value={player}
+          onChange={set("player")}>
+          { players.map(({label, value}) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
+      </td>
+      <td>
+        <input
+          className="time-input"
+          type="number"
+          value={time}
+          onChange={set("time")} />
+      </td>
+      <td>
+        <div className="edit-buttons">
+          <div onClick={askUpdate}>✔️</div>
+          <div onClick={() => stopEditRow()}>❌</div>
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  )
+}
+
+function SimpleSessionRowDataFields({session, editRow} : {session: Session, editRow: Function}) {
+  const { username: me, deleteSession } = useAppContext();
+  const {username, player, time, id} = session;
+  const playerObj = players.find(({value}) => value == player);
+
+  return (
+    <tr>
+      <td>{username}</td>
+      <td>{playerObj?.label || player}</td>
+      <td>{time} min</td>
+      {username == me && (
+        <>
+          <td onClick={() => editRow()}>✍️</td>
+          <td onClick={() => deleteSession(id)}>🗑</td>
+        </>
+      ) || (
+        <>
+          <td></td>
+          <td></td>
+        </>
+      )}
+    </tr>
+  )
+}
+
+function SessionRow({session} : {session: Session}) {
+  const [edit, setEdit] = useState(false);
+
+  if (edit) return (
+    <EditSessionRowDataFields session={session} stopEditRow={() => setEdit(false)} />
+  );
+  else return (
+    <SimpleSessionRowDataFields session={session} editRow={() => setEdit(true)} />
+  );
+}
+
 function SessionsTable() {
   const { sessions } = useAppContext();
 
@@ -77,15 +168,15 @@ function SessionsTable() {
             <th>username</th>
             <th>player</th>
             <th>time</th>
+            <th className="edit">✍️</th>
+            <th>🗑</th>
           </tr>
         </thead>
         <tbody>
-          { sessions.map(({id, username, player, time}) => (
-            <tr key={id}>
-              <td>{username}</td>
-              <td>{player}</td>
-              <td>{time} min</td>
-            </tr>
+          { sessions.map((session) => (
+            <SessionRow
+              key={session.id}
+              session={session} />
           ))}
         </tbody>
       </table>

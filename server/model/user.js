@@ -51,7 +51,7 @@ schema.statics.onJWT = async (jwtPayload, done) => {
 
 schema.statics.getUserFromToken = async (jwtPayload) => {
   const user = await model.findOne({
-    id: jwtPayload.sub,
+    _id: jwtPayload.sub,
   });
 
   return user;

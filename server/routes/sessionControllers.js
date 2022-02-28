@@ -47,7 +47,7 @@ export const getUserSessions = async (model, { params, user }) => {
 export const getAllSessions = async (model) => {
   const sessions = await findAllSessions(model);
   if (!sessions.length) {
-    return { result: null };
+    return { result: [] };
   }
 
   const serializableSessions = sessions.map(serializePopulatedSession);
@@ -63,7 +63,7 @@ export const postSession = async (model, { body, user }) => {
   }
 
   const timeAsNumber = parseInt(time || '', 10);
-  if (time != (`${timeAsNumber}`) || isNaN(timeAsNumber)) {
+  if (time != (`${timeAsNumber}`) || isNaN(timeAsNumber) || time <= 0) {
     const error = validationError('body.time', 'Must be a number', time);
     return { error };
   }
@@ -119,8 +119,8 @@ export const putSession = async (model, { params, body, user }) => {
   }
 
   const timeAsNumber = parseInt(time || '', 10);
-  if (time && (time != (`${timeAsNumber}`) || isNaN(timeAsNumber))) {
-    const error = validationError('body.time', 'Must be a number', time);
+  if (time && (time != (`${timeAsNumber}`) || isNaN(timeAsNumber) || time <= 0)) {
+    const error = validationError('body.time', 'Must be a positive number', time);
     return { error };
   }
 
@@ -139,7 +139,7 @@ export const deleteSession = async (model, { params, user }) => {
     return { error };
   }
 
-  const belongs = await doesSessionBelongsToUser(model, sessionIdAsNumber, user.id);
+  const belongs = await doesSessionBelongsToUser(model, user, sessionIdAsNumber);
   if (!belongs) {
     return { error: authorizationError('Session does not belong to user') };
   }

@@ -31,3 +31,30 @@ export const addNewSession = async (token: string, time: number, player: string)
   return session;
 };
 
+export const loadMyInfo = async (token: string) => {
+  const session = await apiFetch(token)({
+    method: "GET",
+    uri: API_BASE_URI + "/user/me",
+  })
+
+  return session;
+};
+
+export const updateSessionById = async (token: string, id: number, time: number, player: string) => {
+  await apiFetch(token)({
+    method: "PUT",
+    uri: API_BASE_URI + "/session/" + id,
+    content: { time, player },
+  })
+
+  return null;
+};
+
+export const removeSession = async (token: string, id: number) => {
+  await apiFetch(token)({
+    method: "DELETE",
+    uri: API_BASE_URI + "/session/" + id,
+  })
+
+  return null;
+};

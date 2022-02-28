@@ -9,7 +9,7 @@ import TokenHandler from "./scopes/TokenHandler/TokenHandler";
 import Players from "./scopes/Players/Players";
 
 function App() {
-  const { token } = useAppContext();
+  const { token, username } = useAppContext();
   const title = "API: " + (token ? " connected" : " not connected");
 
   return (
@@ -23,6 +23,9 @@ function App() {
         />
       </header>
       <h1>{title}</h1>
+      {username && (
+        <p>Connecté en tant que {username}</p>
+      )}
       <Router>
         <Switch>
           <Route path="/login" component={Login}></Route>
