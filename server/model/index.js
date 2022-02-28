@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import userModel, { name as userName } from './user.js';
+import sessionModel, { name as sessionName } from './session.js';
+import playerModel, { name as playerName } from './player.js';
 
 const {
   DB__HOST, DB_NAME, DB__USER, DB__PASSWORD,
@@ -7,6 +9,8 @@ const {
 
 const model = {
   [userName]: userModel,
+  [sessionName]: sessionModel,
+  [playerName]: playerModel,
   isDbId: (id) => typeof id == 'number' && !isNaN(id),
 };
 

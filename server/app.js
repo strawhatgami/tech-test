@@ -9,6 +9,7 @@ import {
   ensureConnected,
 } from './infra/auth.js';
 import user from './routes/user.js';
+import session from './routes/session.js';
 import model from './model/index.js';
 
 const app = express();
@@ -31,13 +32,14 @@ app.options('*', (req, res) => res.sendStatus(204));
 app.post('/login', authenticateLocal);
 
 app.use(authenticateFromToken);
+
 app.use((req, res, next) => {
   req.model = model;
 
   next();
 });
-
 app.use('/user', ensureConnected, user);
+app.use('/session', ensureConnected, session);
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {

@@ -5,7 +5,7 @@ import { useAppContext } from "../../contexts/AppContext";
 import "./Login.css";
 
 export default function Login() {
-  const { login } = useAppContext();
+  const { login, loadInitialUserData } = useAppContext();
   const history = useHistory();
   const [state, setState] = useState({
     username: "",
@@ -25,16 +25,8 @@ export default function Login() {
 
     if (!username || !password) return;
 
-    let token = null;
-    try {
-      ({token} = await login(username, password));
-    } catch (e) {
-      if (e.status == 401) return;
+    const {token} = await login(username, password);
 
-      console.error("Login error");
-      console.error(e);
-    }
-  
     if(!token) return;
 
     setState({
@@ -43,6 +35,8 @@ export default function Login() {
     });
 
     history.push("/players?token=" + token);
+
+    await loadInitialUserData(token);
   };
 
   return (

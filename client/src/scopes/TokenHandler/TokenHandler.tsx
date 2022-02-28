@@ -4,7 +4,7 @@ import { useLocation } from "react-router";
 import { useAppContext } from "../../contexts/AppContext";
 
 export default function TokenHandler() {
-  const { token, setToken } = useAppContext();
+  const { token, setToken, loadInitialUserData } = useAppContext();
   const location = useLocation();
 
   useEffect(() => {
@@ -14,7 +14,11 @@ export default function TokenHandler() {
 
     const query = new URLSearchParams(location.search);
     const urlToken = query.get("token");
-    if (urlToken) setToken(urlToken);
+    if (urlToken) {
+      setToken(urlToken);
+
+      loadInitialUserData(urlToken);
+    }
   }, [location, token]);
 
   return null;

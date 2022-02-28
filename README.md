@@ -31,6 +31,7 @@ Player {
   name: string
 }
 ```
+Note: Dans le modèle de Session , j'ai fait en sorte que playerId soit un number, pour correspondre à l'id de player.
 
 ## 2. Les étapes
 

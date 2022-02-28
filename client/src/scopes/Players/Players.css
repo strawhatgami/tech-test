@@ -30,6 +30,10 @@ table {
   border: 0.5px #777 solid;
 }
 
+.Players form {
+  color: inherit;
+}
+
 tr > td {
   border-top: 0.5px #777 solid;
 }

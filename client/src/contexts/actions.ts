@@ -1,3 +1,6 @@
 export enum ActionTypes {
   SET_TOKEN = "SET_TOKEN",
+  SET_SESSIONS = "SET_SESSIONS",
+  SET_ERROR = "SET_ERROR",
+  ADD_SESSION = "ADD_SESSION",
 }

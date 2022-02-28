@@ -2,11 +2,13 @@ import AutoIncrementFactory from 'mongoose-sequence';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import passportLocalMongoose from 'passport-local-mongoose';
+import path from 'path';
+import { names } from './associations.js';
+
+const filename = path.basename(import.meta.url);
+export const name = names[filename];
 
 const AutoIncrement = AutoIncrementFactory(mongoose);
-
-export const name = 'User';
-
 const { Schema } = mongoose;
 const { JWT_SECRET, JWT_ISSUER, JWT_AUDIENCE } = process.env;
 
@@ -61,7 +63,7 @@ schema.plugin(passportLocalMongoose, {
   usernameUnique: true,
   limitAttempts: true,
 });
-schema.plugin(AutoIncrement);
+schema.plugin(AutoIncrement, { id: 'user_id_counter', inc_field: '_id' });
 
 const model = mongoose.model(name, schema);
 
