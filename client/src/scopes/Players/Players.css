@@ -17,13 +17,6 @@
   justify-content: space-between;
 }
 
-.stats {
-  flex: 1;
-  min-height: 100px;
-  margin: 0 1rem;
-  background-color: rgba(200, 100, 100, 0.3);
-}
-
 table {
   width: 100%;
   margin-top: 1rem;

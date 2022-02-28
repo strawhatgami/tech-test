@@ -1,0 +1,28 @@
+.stats {
+  background-color: rgba(200, 100, 100, 0.3);
+}
+
+.stats .stats-container {
+  flex: 1;
+  min-height: 100px;
+  margin: 0 1rem;
+  overflow-y: scroll;
+  height: 53vh;
+}
+
+.stats-container .stat .chart-container {
+  height: 200px;
+  width: 300px;
+}
+
+.stats-container .stat .label {
+  padding-left: 20px;
+}
+
+.stats-container .stat p {
+  text-align: initial;
+}
+
+.basic-kv-table * {
+  text-align: left;
+}

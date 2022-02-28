@@ -15,17 +15,23 @@ type Actions<T> = {
   meta?: any;
 };
 
-export interface Session {
+export interface ISession {
   id: number;
   time: number;
   player: string;
   username: string;
 }
 
+interface IPlayerChoice {
+  label: string;
+  value: string;
+}
+
 interface IAppState {
   token: string | null;
-  sessions: Array<Session>;
+  sessions: Array<ISession>;
   username: string;
+  players: Array<IPlayerChoice>
 }
 
 interface IAppContext {
@@ -41,6 +47,11 @@ const initialState: IAppState = {
   token: null,
   sessions: [],
   username: "",
+  players: [{
+    label: 'Windows Media Player', value: 'windows-media-player',
+  }, {
+    label: 'VLC', value: 'vlc',
+  }],
 };
 
 const handleError = async (dispatch: Function, crashable: () => any) => {

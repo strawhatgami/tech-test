@@ -1,16 +1,11 @@
 import React, {useState} from "react";
-import { useAppContext, Session } from "../../contexts/AppContext";
+import { useAppContext, ISession } from "../../contexts/AppContext";
+import Stats from "./Stats";
 
 import "./Players.css";
 
-const players = [{
-  label: 'Windows Media Player', value: 'windows-media-player',
-}, {
-  label: 'VLC', value: 'vlc',
-}];
-
 function CreateSessionForm() {
-  const { addSession } = useAppContext();
+  const { addSession, players } = useAppContext();
   const [state, setState] = useState({
     time: 0,
     player: players[0].value,
@@ -65,8 +60,8 @@ function CreateSessionForm() {
   );
 }
 
-function EditSessionRowDataFields({session, stopEditRow} : {session: Session, stopEditRow: Function}) {
-  const { updateSession } = useAppContext();
+function EditSessionRowDataFields({session, stopEditRow} : {session: ISession, stopEditRow: Function}) {
+  const { updateSession, players } = useAppContext();
   const {id, username, player: initialPlayer, time: initialTime} = session;
   const playerObj = players.find(({value}) => value == initialPlayer);
   const [state, setState] = useState({
@@ -120,8 +115,8 @@ function EditSessionRowDataFields({session, stopEditRow} : {session: Session, st
   )
 }
 
-function SimpleSessionRowDataFields({session, editRow} : {session: Session, editRow: Function}) {
-  const { username: me, deleteSession } = useAppContext();
+function SimpleSessionRowDataFields({session, editRow} : {session: ISession, editRow: Function}) {
+  const { username: me, deleteSession, players } = useAppContext();
   const {username, player, time, id} = session;
   const playerObj = players.find(({value}) => value == player);
 
@@ -145,7 +140,7 @@ function SimpleSessionRowDataFields({session, editRow} : {session: Session, edit
   )
 }
 
-function SessionRow({session} : {session: Session}) {
+function SessionRow({session} : {session: ISession}) {
   const [edit, setEdit] = useState(false);
 
   if (edit) return (
@@ -188,7 +183,7 @@ export default function Players() {
   return (
     <div className="Players">
       <SessionsTable />
-      <div className="stats"></div>
+      <Stats />
     </div>
   );
 }
