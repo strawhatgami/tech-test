@@ -6,8 +6,9 @@
   flex: 1;
   min-height: 100px;
   margin: 0 1rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 53vh;
+  width: 350px;
 }
 
 .stats-container .stat .chart-container {

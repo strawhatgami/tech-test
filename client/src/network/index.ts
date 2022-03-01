@@ -1,6 +1,6 @@
 import { apiFetch, customFetch } from "./misc";
 
-const API_BASE_URI = "http://localhost:3002"; // TODO à mettre dans le .env
+const API_BASE_URI = process.env.REACT_APP_API_PUBLIC_ROOT_URI;
 
 export const login = async (username: string, password: string) => {
   const result = await customFetch({

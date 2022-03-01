@@ -191,7 +191,13 @@ export default function Stats() {
 
   const totalListeningTime = statTotal(totalListeningTimeByPlayer);
   const totalUsers = usersFromSessions(sessions).length;
-  const meanListeningTime = totalListeningTime / totalUsers;
+  const meanListeningTime = sessions.length? totalListeningTime / totalUsers : 0;
+
+  const unidimensionalStats = {
+    "Temps total d'écoute": totalListeningTime + " minutes",
+    "Nombre d'utilisateurs": totalUsers,
+    "Temps moyen d'écoute": meanListeningTime.toFixed(1) + " minutes",
+  };
 
   return (
     <div className="stats">
@@ -200,29 +206,27 @@ export default function Stats() {
         <BasicKeyValueTable
           keyLabel="Statistique"
           valueLabel="Valeur"
-          dict={{
-            "Temps total d'écoute": totalListeningTime + " minutes",
-            "Nombre d'utilisateurs": totalUsers,
-            "Temps moyen d'écoute": meanListeningTime.toFixed(1) + " minutes",
-          }} />
-        <CustomPieChart
-          label="Temps d'écoute par utilisateur"
-          data={totalListeningTimeByUser}
-          yLabel="Temps d'écoute" />
-        <CustomBarChart
-          label="Temps d'écoute moyen par session et par utilisateur"
-          data={meanSessionTimeByUser}
-          xLabel="Utilisateur"
-          yLabel="Temps d'écoute moyen (min)" />
-        <CustomPieChart
-          label="Temps d'écoute par player"
-          data={totalListeningTimeByPlayer}
-          yLabel="Temps d'écoute" />
-        <CustomBarChart
-          label="Temps d'écoute moyen par session et par player"
-          data={meanListeningTimeByPlayerLabel}
-          xLabel="Player"
-          yLabel="Temps d'écoute moyen (min)" />
+          dict={unidimensionalStats} />
+        {sessions.length >= 2 && (<>
+          <CustomPieChart
+            label="Temps d'écoute par utilisateur"
+            data={totalListeningTimeByUser}
+            yLabel="Temps d'écoute" />
+          <CustomBarChart
+            label="Temps d'écoute moyen par session et par utilisateur"
+            data={meanSessionTimeByUser}
+            xLabel="Utilisateur"
+            yLabel="Temps d'écoute moyen (min)" />
+          <CustomPieChart
+            label="Temps d'écoute par player"
+            data={totalListeningTimeByPlayer}
+            yLabel="Temps d'écoute" />
+          <CustomBarChart
+            label="Temps d'écoute moyen par session et par player"
+            data={meanListeningTimeByPlayerLabel}
+            xLabel="Player"
+            yLabel="Temps d'écoute moyen (min)" />
+        </>)}
       </div>
     </div>
   );
