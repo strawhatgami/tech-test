@@ -17,12 +17,7 @@ passport.use(new JwtStrategy(JWTStrategyOpts, User.onJWT));
 
 passport.use(User.createStrategy()); // local strategy
 
-export const disconnect = (req, res) => {
-  req.logout();
-  res.end();
-};
-
-export const registerUserLocal = async (username, password) => {
+const registerUserLocal = async (username, password) => {
   if (!username || !password) return null;
 
   const existingUser = await User.findOne({ username });
@@ -70,13 +65,3 @@ export const authenticateFromToken = (req, res, next) => {
     next();
   }, { session: false })(req, res, next);
 };
-
-export function ensureConnected(req, res, next) {
-  if (!req.user) {
-    const err = new Error('Unauthorized (not connected)');
-    err.status = 401;
-    return next(err);
-  }
-
-  next();
-}

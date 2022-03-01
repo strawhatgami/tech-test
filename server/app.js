@@ -3,11 +3,7 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import bootstrap from './bootstrap.js';
-import {
-  authenticateFromToken,
-  authenticateLocal,
-  ensureConnected,
-} from './infra/auth.js';
+import authRouter, { ensureConnected } from './routes/auth.js';
 import user from './routes/user.js';
 import session from './routes/session.js';
 import model from './model/index.js';
@@ -21,9 +17,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/login', authenticateLocal);
-
-app.use(authenticateFromToken);
+app.use(authRouter);
 
 app.use((req, res, next) => {
   req.model = model;
