@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { useAppContext, ISession } from "../../contexts/AppContext";
+import { useAppContext, ISession, selectPlayerLabel } from "../../contexts/AppContext";
 import Stats from "./Stats";
 
 import "./Players.css";
@@ -63,10 +63,9 @@ function CreateSessionForm() {
 function EditSessionRowDataFields({session, stopEditRow} : {session: ISession, stopEditRow: Function}) {
   const { updateSession, players } = useAppContext();
   const {id, username, player: initialPlayer, time: initialTime} = session;
-  const playerObj = players.find(({value}) => value == initialPlayer);
   const [state, setState] = useState({
     time: initialTime,
-    player: playerObj?.value || initialPlayer,
+    player: initialPlayer,
   });
   const {time, player} = state;
   const set = (fieldName: string) => (e: { target: { value: string; }; }) => {
@@ -116,14 +115,15 @@ function EditSessionRowDataFields({session, stopEditRow} : {session: ISession, s
 }
 
 function SimpleSessionRowDataFields({session, editRow} : {session: ISession, editRow: Function}) {
-  const { username: me, deleteSession, players } = useAppContext();
+  const appState = useAppContext();
+  const { username: me, deleteSession, players } = appState;
   const {username, player, time, id} = session;
-  const playerObj = players.find(({value}) => value == player);
+  const playerLabel = selectPlayerLabel(appState, player) || player;
 
   return (
     <tr>
       <td>{username}</td>
-      <td>{playerObj?.label || player}</td>
+      <td>{playerLabel}</td>
       <td>{time} min</td>
       {username == me && (
         <>

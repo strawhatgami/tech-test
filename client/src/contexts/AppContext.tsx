@@ -27,7 +27,7 @@ interface IPlayerChoice {
   value: string;
 }
 
-interface IAppState {
+export interface IAppState {
   token: string | null;
   sessions: Array<ISession>;
   username: string;
@@ -52,6 +52,11 @@ const initialState: IAppState = {
   }, {
     label: 'VLC', value: 'vlc',
   }],
+};
+
+export const selectPlayerLabel = (state: IAppState, playerValue: string) => {
+  const player = state.players.find(({value}) => value == playerValue);
+  return player?.label || "";
 };
 
 const handleError = async (dispatch: Function, crashable: () => any) => {

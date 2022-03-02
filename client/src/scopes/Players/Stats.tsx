@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppContext, ISession } from "../../contexts/AppContext";
+import { useAppContext, selectPlayerLabel, ISession, IAppState } from "../../contexts/AppContext";
 import {
   PieChart,
   Pie,
@@ -16,7 +16,11 @@ import {
 
 import "./Stats.css";
 
-const toReChartsData = (bidimensionalStat: { [s: string]: number; }, keyLabel: string, valueLabel: string): any[] =>
+interface IBidimentionalStat {
+  [k: string]: number;
+};
+
+const toReChartsData = (bidimensionalStat: IBidimentionalStat, keyLabel: string, valueLabel: string): any[] =>
   Object.entries(bidimensionalStat).map(([key, value]) => ({
     [keyLabel]: key,
     [valueLabel]: value,
@@ -25,7 +29,7 @@ const toReChartsData = (bidimensionalStat: { [s: string]: number; }, keyLabel: s
 const CustomBarChart = ({
   label, data, xLabel, yLabel
 }: {
-  label: string, data: { [s: string]: number; }, xLabel: string, yLabel: string
+  label: string, data: IBidimentionalStat, xLabel: string, yLabel: string
 }) => {
   const reChartsData = toReChartsData(data, xLabel, yLabel);
   return (
@@ -57,7 +61,7 @@ const CustomBarChart = ({
 const CustomPieChart = ({
   label, data, yLabel
 }: {
-  label: string, data: { [s: string]: number; }, yLabel: string
+  label: string, data: IBidimentionalStat, yLabel: string
 }) => {
   const reChartsData = toReChartsData(data, "name", yLabel);
 
@@ -87,7 +91,7 @@ const CustomPieChart = ({
   );
 }
 
-const countBy = (specimens: Array<any>, groupName: string | number) =>
+const countBy = (specimens: Array<any>, groupName: string | number): IBidimentionalStat =>
   specimens.reduce((acc, specimen) => {
     const group = specimen[groupName];
     if (!acc[group]) acc[group] = 0;
@@ -95,7 +99,11 @@ const countBy = (specimens: Array<any>, groupName: string | number) =>
     return acc;
   }, {});
 
-const groupBy = (specimens: Array<any>, groupName: string | number, valueName: string | number) =>
+const groupBy = (
+  specimens: Array<any>,
+  groupName: string | number,
+  valueName: string | number
+): IBidimentionalStat =>
   specimens.reduce((acc, specimen) => {
     const group = specimen[groupName];
     const value = specimen[valueName];
@@ -106,23 +114,23 @@ const groupBy = (specimens: Array<any>, groupName: string | number, valueName: s
     return acc;
   }, {});
 
-const statTotal = (stat: { [s: string]: number; }) =>
+const statTotal = (stat: IBidimentionalStat): number =>
   Object.values(stat).reduce((acc, value) => {
     return acc + value;
   }, 0);
 
-const toPlayersLabels = (players, playerStat) =>
+const toPlayersLabels = (appState: IAppState, playerStat: IBidimentionalStat): IBidimentionalStat =>
   Object.entries(playerStat).reduce((acc, [playerValue, value]) => {
-    const player = players.find(({value}) => value == playerValue);
-    acc[player.label || playerValue] = value;
+    const label = selectPlayerLabel(appState, playerValue) || playerValue;
+    acc[label] = value;
 
     return acc;
   }, {});
 
 const groupedMeans = (
-  totalNumerators: { [s: string]: number; },
-  totalDenominators: { [s: string]: number; }
-) =>
+  totalNumerators: IBidimentionalStat,
+  totalDenominators: IBidimentionalStat
+): IBidimentionalStat =>
   Object.entries(totalNumerators).reduce((acc, [key, totalNumerator]) => {
     const totalDenominator = totalDenominators[key];
     if (!totalDenominator) return acc;
@@ -172,7 +180,8 @@ function BasicKeyValueTable({
 }
 
 export default function Stats() {
-  const { sessions, players } = useAppContext();
+  const appState = useAppContext();
+  const { sessions } = appState;
 
   const totalListeningTimeByUser = groupBy(sessions, "username", "time");
   const totalSessionsByUser = countBy(sessions, "username");
@@ -187,7 +196,8 @@ export default function Stats() {
     totalListeningTimeByPlayer,
     totalSessionsByPlayer,
   );
-  const meanListeningTimeByPlayerLabel = toPlayersLabels(players, meanListeningTimeByPlayer);
+  
+  const meanListeningTimeByPlayerLabel = toPlayersLabels(appState, meanListeningTimeByPlayer);
 
   const totalListeningTime = statTotal(totalListeningTimeByPlayer);
   const totalUsers = usersFromSessions(sessions).length;
@@ -196,7 +206,7 @@ export default function Stats() {
   const unidimensionalStats = {
     "Temps total d'écoute": totalListeningTime + " minutes",
     "Nombre d'utilisateurs": totalUsers,
-    "Temps moyen d'écoute": meanListeningTime.toFixed(1) + " minutes",
+    "Temps moyen d'écoute par utilisateur": meanListeningTime.toFixed(1) + " minutes",
   };
 
   return (
