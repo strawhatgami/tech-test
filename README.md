@@ -7,6 +7,7 @@ L'objectif est simple: Un CRUD fullstack permettant à plusieurs participants de
 cp .env.example .env
 cp client/.env.example client/.env
 cp server/.env.example server/.env
+docker-compose build
 docker-compose up
 ```
 

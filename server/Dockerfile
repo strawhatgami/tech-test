@@ -5,6 +5,7 @@ WORKDIR /usr/src/api
 
 COPY package*.json yarn.lock ./
 RUN npm install
+ENV PATH /usr/src/api/node_modules/.bin:$PATH
 
 COPY . ./
 

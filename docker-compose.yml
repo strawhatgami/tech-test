@@ -12,6 +12,7 @@ services:
       - 127.0.0.1:${API__PUBLIC_PORT}:${API__INTERNAL_PORT}
     volumes:
       - ./server:/usr/src/api
+      - server_node_modules:/usr/src/api/node_modules
     environment:
       - PORT=${API__INTERNAL_PORT}
       - DB__HOST=${DB__HOST}
@@ -44,6 +45,7 @@ services:
       - 127.0.0.1:${CLIENT__PUBLIC_PORT}:3000
     volumes:
       - ./client:/usr/src/client
+      - client_node_modules:/usr/src/client/node_modules
     environment:
       - API_HOST=127.0.0.1:${API__PUBLIC_PORT}
     networks:
@@ -51,3 +53,6 @@ services:
 
 networks:
   tech_test_network:
+volumes:
+  server_node_modules:
+  client_node_modules:
